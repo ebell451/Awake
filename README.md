@@ -1,13 +1,15 @@
 # Awake
 
-Awake is a tool, that resides in system tray and prevents the computer from entering the idle state, thus successfully preventing it from automatically entering sleep/hibernation/the lock screen.
+> **Note:** This is an new, actively maintained fork of the original [gdegeneve/Awake](https://github.com/gdegeneve/Awake) repository by Gerald Degeneve, which has been inactive since 2018. This fork modernizes the codebase—starting with an upgrade from **.NET Framework 4.0 to .NET Framework 4.8**, with future plans to migrate to the latest **.NET** release.
 
-![awake](https://github.com/gdegeneve/Awake/blob/master/img/awake_forever.png)
+Awake is a tool that resides in the system tray and prevents the computer from entering the idle state, thus successfully preventing it from automatically entering sleep, hibernation, or the lock screen.
+
+![awake](https://github.com/ebell451/Awake/blob/master/img/awake_forever.png)
 
 ### Purpose
 
-Awake was designed for those who cannot change the timings in their power settings, because of some enforced policy.
-If you have full administrative access to your PC or no exchange policy or other group policy interfering with your power settings / screen lock timings you do not need awake.
+Awake was designed for those who cannot change the timings in their power settings because of some enforced policy.
+If you have full administrative access to your PC or no Exchange policy or other Group Policy interfering with your power settings / screen lock timings, you do not need Awake.
 
 ### How does it work?
 
@@ -15,16 +17,37 @@ Awake does not change any system settings, therefore it does not require adminis
 
 ## Installation
 
-* Download the latest <a href="https://github.com/gdegeneve/Awake/releases">release</a>.
-* Put awake.exe somewhere, where you like to keep it.
+* Download the latest <a href="https://github.com">release</a>.
+* Put `awake.exe` somewhere you like to keep it.
 * Start it and make your selections.
 
-### Latest Feature
+### Build and Test
 
-Since last release a new menu was added, that allows you to define actions, when the lock screen (WIN+L) is (manually) entered.
+Build the solution:
+
+```powershell
+& "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe" .\Awake.sln /t:Rebuild /p:Configuration=Release /p:Platform="Any CPU" /nologo
+```
+
+Run the unit tests:
+
+```powershell
+& "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\TestPlatform\vstest.console.exe" .\tests\Awake.Tests\bin\Release\net48\Awake.Tests.dll
+```
+## Latest Features & Updates
+
+### Improvements
+
+* Updated the project from .NET Framework 4.0 to 4.8
+* Improved registry, corrupt-state, idle ticket-wraparound, and resource cleanup
+
+### Lock Screen Actions
+
+This feature allows you to define actions when the lock screen (`WIN+L`) is manually entered.
 
 ![awake](https://github.com/gdegeneve/Awake/blob/master/img/lock_screen_action.png)
 
 ## Acknowledgments
 
-Icons by: <a href="http://www.fasticon.com">FastIcon.com</a>
+* Original project and concept by [Gerald Degeneve](https://github.com/gdegeneve/Awake).
+* Icons by: <a href="http://www.fasticon.com">FastIcon.com</a>

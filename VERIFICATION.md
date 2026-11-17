@@ -4,8 +4,8 @@ in verifying that this package's contents are trustworthy.
 
 This package is published by Gerald Degeneve who also created this software.
 
-All binaries will be identical to the releases published on 
-https://github.com/gdegeneve/Awake/releases
+All binaries will be identical to the releases published on
+https://github.com/ebell451/Awake/releases
 
-The fourth version number of the nuget package is only incremented to indicate 
+The fourth version number of the nuget package is only incremented to indicate
 changes to the install / uninstall scripts inside the nuget package, not the binary itself.

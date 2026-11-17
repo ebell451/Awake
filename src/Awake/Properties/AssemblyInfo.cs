@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Awake")]
-[assembly: AssemblyCopyright("© 2018 Gerald Degeneve")]
+[assembly: AssemblyCopyright("© 2026 Ethan Bell, 2018 Gerald Degeneve")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

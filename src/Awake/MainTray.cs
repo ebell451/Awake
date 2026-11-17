@@ -18,12 +18,11 @@ namespace Awake
     {
         private int _idleTime = 0;
         private bool _IsAutoStart = false;
-        private uint _prevExecutionState;
         private volatile bool _IsLock = false;
         private volatile bool _IsDarkOnLock = false;
 
-        private RegistryKey _regPath = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-        private RegistryKey _regSettings = Registry.CurrentUser.CreateSubKey("SOFTWARE\\" + Application.ProductName + "\\" + Application.ProductVersion);
+        private RegistryKey _regPath;
+        private RegistryKey _regSettings;
 
         private List<SleepState> _states = new List<SleepState>();
 
@@ -31,8 +30,17 @@ namespace Awake
         {
             InitializeComponent();
 
+            try
+            {
+                _regPath = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+                _regSettings = Registry.CurrentUser.CreateSubKey("SOFTWARE\\" + Application.ProductName + "\\" + Application.ProductVersion);
+            }
+            catch
+            {
+            }
+
             SystemEvents.SessionSwitch += SystemEvents_SessionSwitch;
-            
+
             _states.Add(new SleepState(3, this.minutes15ToolStripMenuItem, Resources.CrazyEye_Sleepy));
             _states.Add(new SleepState(30, this.minutes30ToolStripMenuItem, Resources.CrazyEye_Sleepy));
             _states.Add(new SleepState(45, this.minutes45ToolStripMenuItem, Resources.CrazyEye_Sleepy));
@@ -48,6 +56,9 @@ namespace Awake
 
         private void CleanUpRunConfig()
         {
+            if (_regPath == null)
+                return;
+
             try
             {
                 //cleanup on update from insomnia.exe to awake.exe
@@ -90,6 +101,9 @@ namespace Awake
         {
             try
             {
+                if (_regPath == null)
+                    throw new InvalidOperationException("Registry startup settings are unavailable.");
+
                 if (_regPath.GetValue("AwakeDonGeatschOS") == null)
                 {
                     startWithWindowsToolStripMenuItem.Checked = false;
@@ -106,9 +120,16 @@ namespace Awake
             try
             {
                 ClearChecked();
+
+                if (_regSettings == null)
+                    throw new InvalidOperationException("Registry application settings are unavailable.");
+
                 int period = (int)_regSettings.GetValue("Period", -1);
 
                 var state = _states.FirstOrDefault(s => s.Period == period);
+                if (state == null)
+                    throw new InvalidOperationException("The saved sleep state is invalid.");
+
                 notico_tray.Icon = state.Icon;
                 state.MenuItem.Checked = true;
             }
@@ -132,6 +153,8 @@ namespace Awake
 
         private void SaveApplicationState()
         {
+            if (_regPath != null)
+            {
             if (startWithWindowsToolStripMenuItem.Checked)
             {
                 _regPath.SetValue("AwakeDonGeatschOS", Application.ExecutablePath.ToString());
@@ -140,9 +163,17 @@ namespace Awake
             {
                 _regPath.DeleteValue("AwakeDonGeatschOS", false);
             }
+            }
 
             var state = _states.FirstOrDefault(s => s.MenuItem.Checked);
+            if (state == null)
+                return;
+
             notico_tray.Icon = state.Icon;
+
+            if (_regSettings == null)
+                return;
+
             _regSettings.SetValue("Period", state.Period, RegistryValueKind.DWord);
 
             try
@@ -157,20 +188,18 @@ namespace Awake
 
         private void SetIdleTime()
         {
-            int systemUptime = Environment.TickCount;
-            int LastInputTicks = 0;
-            int IdleTicks = 0;
             Win32Wrapper.LASTINPUTINFO LastInputInfo = new Win32Wrapper.LASTINPUTINFO();
             LastInputInfo.cbSize = (uint)Marshal.SizeOf(LastInputInfo);
             LastInputInfo.dwTime = 0;
 
             if (Win32Wrapper.GetLastInputInfo(ref LastInputInfo))
             {
-                LastInputTicks = (int)LastInputInfo.dwTime;
-                IdleTicks = systemUptime - LastInputTicks;
+                uint systemUptime = unchecked((uint)Environment.TickCount);
+                _idleTime = AwakePolicy.CalculateIdleMinutes(systemUptime, LastInputInfo.dwTime);
+                return;
             }
 
-            _idleTime = (IdleTicks / 1000 / 60) + 1;
+            _idleTime = 1;
         }
 
         private void SetState()
@@ -178,14 +207,16 @@ namespace Awake
             SetIdleTime();
 
             var state = _states.FirstOrDefault(s => s.MenuItem.Checked);
+            if (state == null)
+                return;
 
-            if ((state.Period != -1 && _idleTime > state.Period) || (_IsLock && (disableOnLockScreenToolStripMenuItem.Checked)))
+            if (AwakePolicy.ShouldDeactivate(state.Period, _idleTime, _IsLock, disableOnLockScreenToolStripMenuItem.Checked))
             {
-                _prevExecutionState = Win32Wrapper.SetThreadExecutionState(Win32Wrapper.ES_CONTINUOUS);
+                Win32Wrapper.SetThreadExecutionState(Win32Wrapper.ES_CONTINUOUS);
             }
             else
             {
-                _prevExecutionState = Win32Wrapper.SetThreadExecutionState(Win32Wrapper.ES_CONTINUOUS | Win32Wrapper.ES_DISPLAY_REQUIRED | Win32Wrapper.ES_SYSTEM_REQUIRED);
+                Win32Wrapper.SetThreadExecutionState(Win32Wrapper.ES_CONTINUOUS | Win32Wrapper.ES_DISPLAY_REQUIRED | Win32Wrapper.ES_SYSTEM_REQUIRED);
             }
 
             if (_IsLock && monitorOffOnLockScreenToolStripMenuItem.Checked && !_IsDarkOnLock)
@@ -204,7 +235,7 @@ namespace Awake
 
         private void httpawakecodeplexcomToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process.Start("https://github.com/gdegeneve/Awake");
+            Process.Start("https://github.com/ebell451/Awake");
         }
 
         private void MainTray_Load(object sender, EventArgs e)
