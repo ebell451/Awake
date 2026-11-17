@@ -4,13 +4,13 @@
     <id>awake</id>
     <title>Awake</title>
     <version>1.4.2.1</version>
-    <authors>ebell451, gdegeneve</authors>
-    <owners>ebell451</owners>
+    <authors>Ethan Bell, Gerald Degeneve</authors>
+    <owners>Ethan Bell</owners>
     <summary>Tool to prevent sleep.</summary>
     <description>Awake is a tool, that resides in system tray and prevents the computer from entering the idle state, thus successfully preventing it from automatically entering sleep/hibernation/the lock screen.</description>
 	<copyright>2026 Ethan Bell, 2018 Gerald Degeneve</copyright>
     <projectUrl>https://github.com/ebell451/Awake</projectUrl>
-	<licenseUrl>https://github.com/ebell451/Awake/blob/master/LICENSE.md</licenseUrl>
+	<licenseUrl>https://github.com/ebell451/Awake/blob/master/LICENSE</licenseUrl>
 	<projectSourceUrl>https://github.com/ebell451/Awake/tree/master/src</projectSourceUrl>
 	<packageSourceUrl>https://github.com/ebell451/Awake/tree/master/deploy</packageSourceUrl>
 	<tags>sleep hibernate lock idle screensaver</tags>
@@ -20,7 +20,7 @@
   <files>
     <file src="tools\**" target="tools" />
 	<file src="..\bin\Release\Awake.exe" target="tools" />
-	<file src="..\LICENSE.md" target="tools" />
+	<file src="..\LICENSE" target="tools" />
 	<file src="..\VERIFICATION.md" target="tools" />
   </files>
 </package>
