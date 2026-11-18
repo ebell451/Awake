@@ -3,7 +3,7 @@
   <metadata>
     <id>awake</id>
     <title>Awake</title>
-    <version>1.4.2.1</version>
+    <version>1.5.0</version>
     <authors>Ethan Bell, Gerald Degeneve</authors>
     <owners>Ethan Bell</owners>
     <summary>Tool to prevent sleep.</summary>

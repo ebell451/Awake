@@ -58,6 +58,7 @@
             this.startWithWindowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.versionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.preventsSleepToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.httpawakecodeplexcomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
@@ -198,11 +199,19 @@
             // aboutToolStripMenuItem
             //
             this.aboutToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.versionToolStripMenuItem,
             this.preventsSleepToolStripMenuItem,
             this.httpawakecodeplexcomToolStripMenuItem});
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.aboutToolStripMenuItem.Text = "About";
+            //
+            // versionToolStripMenuItem
+            //
+            this.versionToolStripMenuItem.Enabled = false;
+            this.versionToolStripMenuItem.Name = "versionToolStripMenuItem";
+            this.versionToolStripMenuItem.Size = new System.Drawing.Size(263, 22);
+            this.versionToolStripMenuItem.Text = "Version";
             //
             // preventsSleepToolStripMenuItem
             //
@@ -268,6 +277,7 @@
         private System.Windows.Forms.ToolStripMenuItem foreverToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem disabledToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem versionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem preventsSleepToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem httpawakecodeplexcomToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
