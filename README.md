@@ -29,10 +29,10 @@ Build the solution:
 & "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe" .\Awake.sln /t:Rebuild /p:Configuration=Release /p:Platform="Any CPU" /nologo
 ```
 
-Run the unit tests:
+Alternatively, build the solution with the .NET SDK:
 
 ```powershell
-& "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\TestPlatform\vstest.console.exe" .\tests\Awake.Tests\bin\Release\net48\Awake.Tests.dll
+dotnet build .\Awake.sln -c Release -p:Platform="Any CPU"
 ```
 ## Latest Features & Updates
 
